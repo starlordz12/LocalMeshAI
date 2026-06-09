@@ -35,11 +35,24 @@ def boolean_supported() -> bool:
 
 
 def _load_base(project: Project, mesh_id: str) -> trimesh.Trimesh:
+    import math
+
+    import trimesh.transformations as tf
+
     mesh_info = project_store.get_mesh(project, mesh_id)
     abs_path = project_store.resolve_relative(project.id, mesh_info.source_file)
     if not abs_path.exists():
         raise GeometryError(f"Source mesh file is missing: {mesh_info.source_file}")
-    return mesh_analyzer.load_mesh(abs_path)
+    mesh = mesh_analyzer.load_mesh(abs_path)
+
+    # Apply the same orientation transform the viewer shows, so the export matches the
+    # on-screen placement (rotation in degrees XYZ, then translation in mm).
+    rx, ry, rz = (math.radians(float(a)) for a in mesh_info.rotation_deg)
+    if any((rx, ry, rz)):
+        mesh.apply_transform(tf.euler_matrix(rx, ry, rz, axes="sxyz"))
+    if any(float(v) for v in mesh_info.position_mm):
+        mesh.apply_translation([float(v) for v in mesh_info.position_mm])
+    return mesh
 
 
 def _collect_helpers(
