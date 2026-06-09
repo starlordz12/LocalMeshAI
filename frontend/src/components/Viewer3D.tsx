@@ -64,7 +64,11 @@ function BaseMesh({ mesh, targetRef }: { mesh: MeshInfo; targetRef: React.Mutabl
   const selectedId = useStore((s) => s.selectedId);
   const select = useStore((s) => s.select);
 
-  const url = mesh.displayGlb ? fileUrl(project.id, mesh.displayGlb) : "";
+  // Cache-bust by the source file so a repaired mesh (new source_file, rebuilt GLB at the
+  // same path) actually refetches instead of showing the cached geometry.
+  const url = mesh.displayGlb
+    ? `${fileUrl(project.id, mesh.displayGlb)}?v=${encodeURIComponent(mesh.sourceFile)}`
+    : "";
   const gltf = useGLTF(url);
 
   const scene = useMemo(() => {
