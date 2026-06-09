@@ -82,5 +82,10 @@ def apply_helpers(
         if isinstance(result, trimesh.Scene):
             result = trimesh.util.concatenate(tuple(result.geometry.values()))
 
+    # STL stores vertices per-face; weld them so the watertight/manifold check is accurate.
+    try:
+        result.merge_vertices()
+    except Exception:
+        pass
     log.append(f"result_tris={len(result.faces)}")
     return result, log
