@@ -1,0 +1,46 @@
+# ---------------------------------------------------------------------------
+# LocalMeshAI .gitignore
+# ---------------------------------------------------------------------------
+
+# --- Python / backend ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- Node / frontend ---
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.local
+.eslintcache
+
+# --- Editor / OS ---
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# --- LocalMeshAI runtime data ---
+# User projects are local working data, not source. Keep the folder, ignore contents.
+projects/*
+!projects/.gitkeep
+
+# Generated display/derived meshes inside any workspace
+**/_derived/
+*.log
+
+# Local environment / secrets
+.env
+.env.*
+!.env.example
