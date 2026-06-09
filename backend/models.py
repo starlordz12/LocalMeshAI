@@ -106,6 +106,10 @@ class MeshInfo(CamelModel):
     display_glb: Optional[str] = None  # relative path to the viewer GLB
     format: str  # stl/obj/ply/3mf
     analysis: Optional[MeshAnalysis] = None
+    # Orientation transform applied identically by the viewer and by export, so rotating /
+    # laying-flat the model stays consistent with helper placement and the baked result.
+    position_mm: Vec3 = (0.0, 0.0, 0.0)
+    rotation_deg: Vec3 = (0.0, 0.0, 0.0)
 
 
 # --- Operation tree --------------------------------------------------------------------
