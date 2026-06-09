@@ -1,0 +1,23 @@
+# Normalize line endings across platforms.
+# Text files are stored with LF in the repo; Git converts on checkout per-OS.
+* text=auto eol=lf
+
+# Shell scripts must stay LF even on Windows checkouts.
+*.sh text eol=lf
+
+# Windows scripts stay CRLF.
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+
+# Binary assets — never normalize.
+*.stl binary
+*.obj binary
+*.3mf binary
+*.ply binary
+*.glb binary
+*.gltf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
