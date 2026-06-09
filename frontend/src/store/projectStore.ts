@@ -250,8 +250,8 @@ export const useStore = create<State>((set, get) => ({
 
   addCatalogHelper: (entry, position) => {
     const project = get().project;
-    const meshId = project?.meshes[0]?.id ?? null;
-    const op = operationFromCatalog(entry, meshId, position ?? [0, 0, 0]);
+    const mesh = project?.meshes[0] ?? null;
+    const op = operationFromCatalog(entry, mesh?.id ?? null, position ?? defaultHelperPosition(mesh, entry.defaultScaleMm ?? [20, 10, 3]));
     mutateProject(get, set, (p) => p.operations.push(op));
     set({ selectedId: op.id });
     get().pushLog("info", `Added helper "${op.name}" (${op.mode}).`);
@@ -509,6 +509,18 @@ export const useStore = create<State>((set, get) => ({
 }));
 
 // --- helpers ---------------------------------------------------------------------------
+
+/** Place a new helper on top of the imported mesh (world frame) so it's immediately visible
+ *  and useful, instead of at the world origin. Ignores mesh rotation (fine for the common
+ *  identity orientation); the user can fine-tune in the inspector. */
+function defaultHelperPosition(mesh: MeshInfo | null, scale: Vec3): Vec3 {
+  if (!mesh?.analysis) return [0, 0, 0];
+  const bb = mesh.analysis.boundingBox;
+  const cx = (bb.min[0] + bb.max[0]) / 2 + mesh.positionMm[0];
+  const cy = (bb.min[1] + bb.max[1]) / 2 + mesh.positionMm[1];
+  const topZ = bb.max[2] + mesh.positionMm[2] + scale[2] / 2;
+  return roundVec([cx, cy, topZ]);
+}
 
 function triggerDownload(projectId: string, relPath: string) {
   const a = document.createElement("a");
