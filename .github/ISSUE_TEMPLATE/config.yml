@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://github.com/starlordz12/LocalMeshAI/tree/main/docs
+    about: Architecture, geometry pipeline, user workflows, and roadmap.
+  - name: Discussions / questions
+    url: https://github.com/starlordz12/LocalMeshAI/discussions
+    about: Ask usage questions or share workflows (enable Discussions to use this).
